@@ -57,6 +57,7 @@ $NSXAdvLBIPAMName = "tkgs-ipam"
 $NSXALBLicenseType = "ESSENTIALS"
 $NSXALBDefaultAdminPassword = "58NFaGDJm(PJH0G"
 $NSXALBSEVMFolder = "nsxalb-service-engines"
+$NSXALBSENamePrefix = "tkg_nsxalb"
 
 # Service Engine Management Network Configuration
 $NSXAdvLBManagementNetwork = "172.16.51.0"
@@ -1265,7 +1266,7 @@ if ($setupNSXAdvLB -eq 1) {
         $vSphereClusterRefURL = (((Invoke-WebRequest -Uri https://${NSXAdvLByManagementIPAddress}/api/vimgrclusterruntime -Method GET -Headers $newPassbasicAuthHeaders -SkipCertificateCheck).Content | ConvertFrom-Json).results | where-object { $_.name -eq $NewVCVSANClusterName }).url
 
         $ServiceEngineGroupResult.vcenter_folder = $NSXALBSEVMFolder
-        $ServiceEngineGroupResult.se_name_prefix = "tkg_nsxalb"
+        $ServiceEngineGroupResult.se_name_prefix = $NSXALBSENamePrefix
         $ServiceEngineGroupResult.vcenter_datastores_include = $True
         $ServiceEngineGroupResult.vcenter_datastore_mode = "VCENTER_DATASTORE_SHARED"
 
