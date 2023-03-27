@@ -105,7 +105,7 @@ $VMVMFS = "false"
 
 # Name of new vSphere Datacenter/Cluster when VCSA is deployed
 $NewVCDatacenterName = "tanzu-datacenter"
-$NewVCVSANClusterName = "workload-cluster"
+$NewVCVSANClusterName = "tanzu-cluster"
 $NewVCVDSName = "tanzu-vds"
 $NewVCMgmtPortgroupName = "dvpg-mgmt-network"
 $NewVCWorkloadPortgroupName = "dvpg-node-network"
