@@ -5,9 +5,9 @@
 # https://williamlam.com/2021/04/automated-lab-deployment-script-for-vsphere-with-tanzu-using-nsx-advanced-load-balancer-nsx-alb.html
 
 # vCenter Server used to deploy vSphere with Tanzu with NSX Advanced Load Balancer Lab
-$VIServer = "ts-vc-01.terasky.local"
-$VIUsername = "itay@vsphere.local"
-$VIPassword = "VMware1!"
+$VIServer = "vcsa@cloudnativeapps.cloud"
+$VIUsername = "your-vsphere-user"
+$VIPassword = "your-vsphere-password"
 
 # https://williamlam.com/nested-virtualization/nested-esxi-virtual-appliance
 # Full Path to both the Nested ESXi 7.0 VA, Extracted VCSA 7.0 ISO & NSX Advanced 20.1.7 OVA
@@ -37,7 +37,7 @@ $NestedESXiCapacityvDisk = "300" #GB
 $VCSADeploymentSize = "tiny"
 $VCSADisplayName = "l01-tkgs-vcsa-01"
 $VCSAIPAddress = "172.16.51.70"
-$VCSAHostname = "l01-tkgs-vcsa-01.terasky.lab" #Change to IP if you don't have valid DNS
+$VCSAHostname = "l01-tkgs-vcsa-01.cloudnativeapps.cloud" #Change to IP if you don't have valid DNS
 $VCSAPrefix = "24"
 $VCSASSODomainName = "vsphere.local"
 $VCSASSOPassword = "VMware1!"
@@ -48,7 +48,7 @@ $VCSASSHEnable = "true"
 $NSXALBVersion = "20.1.7"
 $NSXAdvLBDisplayName = "l01-tkgs-nsxalb-01"
 $NSXAdvLByManagementIPAddress = "172.16.51.69"
-$NSXAdvLBHostname = "l01-tkgs-nsxalb-01.terasky.lab"
+$NSXAdvLBHostname = "l01-tkgs-nsxalb-01.cloudnativeapps.cloud"
 $NSXAdvLBAdminPassword = "VMware1!"
 $NSXAdvLBvCPU = "8" #GB
 $NSXAdvLBvMEM = "24" #GB
@@ -77,8 +77,8 @@ $NSXAdvLBVIPNetworkEndRange = "172.16.53.40"
 $NSXAdvLBSSLCertName = "nsx-alb"
 $NSXAdvLBSSLCertExpiry = "365" # Days
 $NSXAdvLBSSLCertEmail = "admin@lab.test"
-$NSXAdvLBSSLCertOrganizationUnit = "cna"
-$NSXAdvLBSSLCertOrganization = "terasky"
+$NSXAdvLBSSLCertOrganizationUnit = "k8s"
+$NSXAdvLBSSLCertOrganization = "k8s"
 $NSXAdvLBSSLCertLocation = "US"
 $NSXAdvLBSSLCertState = "NY"
 $NSXAdvLBSSLCertCountry = "US"
@@ -95,7 +95,7 @@ $VMGateway = "172.16.51.1"
 $VMDNS = "172.16.20.10"
 $VMNTP = "172.16.20.10"
 $VMPassword = "VMware1!"
-$VMDomain = "terasky.lab"
+$VMDomain = "cloudnativeapps.cloud"
 $VMSyslog = "172.16.51.51"
 $VMFolder = "tkgs-nested-infra"
 $VMFolderFullPath = "LABS/itay/l01/tkgs-nested-infra"
