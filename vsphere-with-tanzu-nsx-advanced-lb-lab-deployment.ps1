@@ -140,7 +140,7 @@ $configureVSANDiskGroup = 1
 $configureVDS = 1
 $clearVSANHealthCheckAlarm = 1
 $setupTanzuStoragePolicy = 1
-$setupTanzu = 0
+$setupTanzu = 1
 $setupNSXAdvLB = 1
 $moveVMsIntovApp = 0
 
@@ -779,6 +779,8 @@ if ($setupNSXAdvLB -eq 1) {
     MyLogger "Creating NSX ALB Service Engines VM folder in new vCSA..."
     $vc = Connect-VIServer $VCSAIPAddress -User "administrator@$VCSASSODomainName" -Password $VCSASSOPassword -WarningAction SilentlyContinue -Force
     New-Folder -Server $vc -Location VM -Name $NSXALBSEVMFolder | Out-Null
+    Remove-Folder -Server $vc -Folder "Discovered virtual machine" -Confirm:$false | Out-Null
+
     Disconnect-VIServer * -Confirm:$false | Out-Null
 
     # NSX ALB can take up to several minutes to initialize upon initial power on
