@@ -5,15 +5,15 @@
 # https://williamlam.com/2021/04/automated-lab-deployment-script-for-vsphere-with-tanzu-using-nsx-advanced-load-balancer-nsx-alb.html
 
 # vCenter Server used to deploy vSphere with Tanzu with NSX Advanced Load Balancer Lab
-$VIServer = "vcsa@cloudnativeapps.cloud"
-$VIUsername = "your-vsphere-user"
-$VIPassword = "your-vsphere-password"
+$VIServer = "demo-vc-01.terasky.demo"
+$VIUsername = "itay@terasky.demo"
+$VIPassword = "VMware1!"
 
 # https://williamlam.com/nested-virtualization/nested-esxi-virtual-appliance
-# Full Path to both the Nested ESXi 7.0 VA, Extracted VCSA 7.0 ISO & NSX Advanced 20.1.7 OVA
-$NestedESXiApplianceOVA = "C:\Users\itay\Downloads\tkgs\Nested_ESXi7.0u3k_Appliance_Template_v1.ova"
-$VCSAInstallerPath = "C:\Users\itay\Downloads\tkgs\VMware-VCSA-all-7.0.3-21290409"
-$NSXAdvLBOVA = "C:\Users\itay\Downloads\tkgs\controller-20.1.7-9154.ova"
+# Full Path to both the Nested ESXi VA, Extracted VCSA ISO & NSX Advanced OVA
+$NestedESXiApplianceOVA = "C:\Users\itay\Downloads\tkgs\Nested_ESXi8.0u2b_Appliance_Template_v1.ova"
+$VCSAInstallerPath = "C:\Users\itay\Downloads\tkgs\VMware-VCSA-all-8.0.2-23504390"
+$NSXAdvLBOVA = "C:\Users\itay\Downloads\nsxalb\controller-22.1.5-9093.ova"
 
 # TKG Content Library URL
 $TKGContentLibraryName = "tkg-content-library"
@@ -21,9 +21,9 @@ $TKGContentLibraryURL = "https://wp-content.vmware.com/v2/latest/lib.json"
 
 # Nested ESXi VMs to deploy
 $NestedESXiHostnameToIPs = @{
-    "l01-tkgs-esxi-01" = "172.16.51.71"
-    "l01-tkgs-esxi-02" = "172.16.51.72"
-    "l01-tkgs-esxi-03" = "172.16.51.73"
+    "it-tkgs-esxi-01" = "10.100.152.71"
+    "it-tkgs-esxi-02" = "10.100.152.72"
+    "it-tkgs-esxi-03" = "10.100.152.73"
 }
 
 # Nested ESXi VM Resources
@@ -34,44 +34,44 @@ $NestedESXiCachingvDisk = "8" #GB
 $NestedESXiCapacityvDisk = "300" #GB
 
 # VCSA Deployment Configuration
-$VCSADeploymentSize = "tiny"
-$VCSADisplayName = "l01-tkgs-vcsa-01"
-$VCSAIPAddress = "172.16.51.70"
-$VCSAHostname = "l01-tkgs-vcsa-01.cloudnativeapps.cloud" #Change to IP if you don't have valid DNS
+$VCSADeploymentSize = "medium"
+$VCSADisplayName = "it-tkgs-vcsa-01"
+$VCSAIPAddress = "10.100.152.70"
+$VCSAHostname = "it-tkgs-vcsa-01.terasky.demo" #Change to IP if you don't have valid DNS
 $VCSAPrefix = "24"
 $VCSASSODomainName = "vsphere.local"
-$VCSASSOPassword = "VMware1!"
-$VCSARootPassword = "VMware1!"
+$VCSASSOPassword = "VMware123456!"
+$VCSARootPassword = "VMware123456!"
 $VCSASSHEnable = "true"
 
 # NSX Advanced LB Configuration
-$NSXALBVersion = "20.1.7"
-$NSXAdvLBDisplayName = "l01-tkgs-nsxalb-01"
-$NSXAdvLByManagementIPAddress = "172.16.51.69"
-$NSXAdvLBHostname = "l01-tkgs-nsxalb-01.cloudnativeapps.cloud"
-$NSXAdvLBAdminPassword = "VMware1!"
+$NSXALBVersion = "22.1.5"
+$NSXAdvLBDisplayName = "it-tkgs-nsxalb-01"
+$NSXAdvLByManagementIPAddress = "10.100.152.69"
+$NSXAdvLBHostname = "it-tkgs-nsxalb-01.terasky.demo"
+$NSXAdvLBAdminPassword = "VMware123456!"
 $NSXAdvLBvCPU = "8" #GB
 $NSXAdvLBvMEM = "24" #GB
-$NSXAdvLBPassphrase = "VMware1!"
+$NSXAdvLBPassphrase = "VMware123456!"
 $NSXAdvLBIPAMName = "tkgs-ipam"
 $NSXALBLicenseType = "ESSENTIALS"
 $NSXALBDefaultAdminPassword = "58NFaGDJm(PJH0G"
 $NSXALBSEVMFolder = "nsxalb-service-engines"
-$NSXALBSENamePrefix = "tkg_nsxalb"
+$NSXALBSENamePrefix = "it_tkg_nsxalb"
 
 # Service Engine Management Network Configuration
-$NSXAdvLBManagementNetwork = "172.16.51.0"
+$NSXAdvLBManagementNetwork = "10.100.152.0"
 $NSXAdvLBManagementNetworkPrefix = "24"
-$NSXAdvLBManagementNetworkStartRange = "172.16.51.74"
-$NSXAdvLBManagementNetworkEndRange = "172.16.51.77"
+$NSXAdvLBManagementNetworkStartRange = "10.100.152.74"
+$NSXAdvLBManagementNetworkEndRange = "10.100.152.77"
 
 # VIP Network Configuration
 $NSXAdvLBVIPNetworkName = "itay-k8s-vips"
-$NSXAdvLBVIPNetwork = "172.16.53.0"
-$NSXAdvLBVIPNetworkGateway = "172.16.53.1"
+$NSXAdvLBVIPNetwork = "10.100.154.0"
+$NSXAdvLBVIPNetworkGateway = "10.100.154.1"
 $NSXAdvLBVIPNetworkPrefix = "24"
-$NSXAdvLBVIPNetworkStartRange = "172.16.53.20"
-$NSXAdvLBVIPNetworkEndRange = "172.16.53.40"
+$NSXAdvLBVIPNetworkStartRange = "10.100.154.20"
+$NSXAdvLBVIPNetworkEndRange = "10.100.154.40"
 
 # Self-Signed TLS Certificate
 $NSXAdvLBSSLCertName = "nsx-alb"
@@ -84,21 +84,22 @@ $NSXAdvLBSSLCertState = "NY"
 $NSXAdvLBSSLCertCountry = "US"
 
 # General Deployment Configuration for Nested ESXi, VCSA & NSX Adv LB VM
-$VMDatacenter = "Main"
-$VMCluster = "LAB-V3"
+$VMDatacenter = "Demo-Datacenter"
+$VMCluster = "Demo-Cluster"
 $VMResourcePool = "US"
 $VMNetwork = "itay-k8s-mgmt"
 $WorkloadNetwork = "itay-k8s-nodes"
-$VMDatastore = "LAB-V3-vSANDatastore"
+$VMDatastore = "vsanDatastore"
 $VMNetmask = "255.255.255.0"
-$VMGateway = "172.16.51.1"
-$VMDNS = "172.16.20.10"
-$VMNTP = "172.16.20.10"
-$VMPassword = "VMware1!"
-$VMDomain = "cloudnativeapps.cloud"
-$VMSyslog = "172.16.51.51"
+$VMGateway = "10.100.152.1"
+$VMDNS = "10.100.100.100"
+$VMNTP = "10.100.100.100"
+$VMPassword = "VMware123456!"
+$VMDomain = "terasky.demo"
+$VMSearchPath = "terasky.demo"
+$VMSyslog = "10.100.152.51"
 $VMFolder = "tkgs-nested-infra"
-$VMFolderFullPath = "LABS/itay/l01/tkgs-nested-infra"
+$VMFolderFullPath = "LABS/itay/tkgs-nested-infra"
 # Applicable to Nested ESXi only
 $VMSSH = "true"
 $VMVMFS = "false"
@@ -117,7 +118,7 @@ $StoragePolicyName = "tkg-storage-policy"
 $StoragePolicyTagCategory = "tkg-tag-category"
 $StoragePolicyTagName = "tkg-storage"
 $DevOpsUsername = "devops"
-$DevOpsPassword = "VMware1!"
+$DevOpsPassword = "VMware123456!"
 
 # Advanced Configurations
 # Set to 1 only if you have DNS (forward/reverse) for ESXi hostnames
@@ -464,7 +465,7 @@ if ($deployNestedESXiVMs -eq 1) {
         $ovfconfig.common.guestinfo.ssh.value = $VMSSHVar
 
         MyLogger "Deploying Nested ESXi VM $VMName ..."
-        $vm = Import-VApp -Source $NestedESXiApplianceOVA -OvfConfiguration $ovfconfig -Name $VMName -Location $ResourcePool -InventoryLocation $VMFolder -VMHost $vmhost -Datastore $datastore -DiskStorageFormat thin
+        $vm = Import-VApp -Source $NestedESXiApplianceOVA -OvfConfiguration $ovfconfig -Name $VMName -Location $ResourcePool -InventoryLocation $VMFolder -VMHost $vmhost -Datastore $datastore -DiskStorageFormat thin -Force
 
         MyLogger "Adding vmnic2/vmnic3/vmnic4 for $VMNetwork/$WorkloadNetwork/$NSXAdvLBVIPNetworkName to passthrough to Nested ESXi VMs ..."
 
@@ -504,7 +505,7 @@ if ($deployNSXAdvLB -eq 1) {
     $ovfconfig.avi.CONTROLLER.default_gw.value = $VMGateway
 
     MyLogger "Deploying NSX Advanced LB VM $NSXAdvLBDisplayName ..."
-    $vm = Import-VApp -Source $NSXAdvLBOVA -OvfConfiguration $ovfconfig -Name $NSXAdvLBDisplayName -Location $ResourcePool -InventoryLocation $VMFolder -VMHost $vmhost -Datastore $datastore -DiskStorageFormat thin
+    $vm = Import-VApp -Source $NSXAdvLBOVA -OvfConfiguration $ovfconfig -Name $NSXAdvLBDisplayName -Location $ResourcePool -InventoryLocation $VMFolder -VMHost $vmhost -Datastore $datastore -DiskStorageFormat thin -Force
 
     MyLogger "Updating vCPU Count to $NSXAdvLBvCPU & vMEM to $NSXAdvLBvMEM GB ..."
     Set-VM -Server $viConnection -VM $vm -NumCpu $NSXAdvLBvCPU -MemoryGB $NSXAdvLBvMEM -Confirm:$false | Out-File -Append -LiteralPath $verboseLogFile
@@ -541,6 +542,15 @@ if ($deployVCSA -eq 1) {
     $config.'new_vcsa'.os.ntp_servers = $VMNTP
     $config.'new_vcsa'.network.system_name = $VCSAHostname
     $config.'new_vcsa'.os.password = $VCSARootPassword
+
+    $vcsaConfigOvftoolArgs = @{
+        "prop:vami.domain.VMware-vCenter-Server-Appliance"      = $VMDomain;
+        "prop:vami.searchpath.VMware-vCenter-Server-Appliance"  = $VMSearchPath;
+    }
+
+    $config.'new_vcsa' | Add-Member -MemberType NoteProperty -Name ovftool_arguments -Value $vcsaConfigOvftoolArgs
+
+
     if ($VCSASSHEnable -eq "true") {
         $VCSASSHEnableVar = $true
     }
@@ -643,7 +653,7 @@ if ($setupNewVC -eq 1) {
 
             $targetVMHost = $VMIPAddress
             if ($addHostByDnsName -eq 1) {
-                $targetVMHost = $VMName
+                $targetVMHost = "$VMName.$VMDomain"
             }
             MyLogger "Adding ESXi host $targetVMHost to Cluster ..."
             Add-VMHost -Server $vc -Location (Get-Cluster -Name $NewVCVSANClusterName) -User "root" -Password $VMPassword -Name $targetVMHost -Force | Out-File -Append -LiteralPath $verboseLogFile
@@ -1133,6 +1143,7 @@ if ($setupNSXAdvLB -eq 1) {
             "password"             = "$VCSASSOPassword";
             "vcenter_url"          = "$VCSAHostname";
             "privilege"            = "WRITE_ACCESS";
+            "use_content_lib"      = $False;
             "datacenter"           = "$NewVCDatacenterName";
             "management_ip_subnet" = @{
                 "ip_addr" = @{
