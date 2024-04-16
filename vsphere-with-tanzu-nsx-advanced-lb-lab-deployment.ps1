@@ -5,9 +5,9 @@
 # https://williamlam.com/2021/04/automated-lab-deployment-script-for-vsphere-with-tanzu-using-nsx-advanced-load-balancer-nsx-alb.html
 
 # vCenter Server used to deploy vSphere with Tanzu with NSX Advanced Load Balancer Lab
-$VIServer = "demo-vc-01.terasky.demo"
-$VIUsername = "itay@terasky.demo"
-$VIPassword = "VMware1!"
+$VIServer = "vcenter-fqdn"
+$VIUsername = "vcenter-username"
+$VIPassword = "vcenter-password"
 
 # https://williamlam.com/nested-virtualization/nested-esxi-virtual-appliance
 # Full Path to both the Nested ESXi VA, Extracted VCSA ISO & NSX Advanced OVA
