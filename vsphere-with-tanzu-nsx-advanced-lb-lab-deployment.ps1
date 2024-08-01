@@ -5,15 +5,15 @@
 # https://williamlam.com/2021/04/automated-lab-deployment-script-for-vsphere-with-tanzu-using-nsx-advanced-load-balancer-nsx-alb.html
 
 # vCenter Server used to deploy vSphere with Tanzu with NSX Advanced Load Balancer Lab
-$VIServer = "vcsa@cloudnativeapps.cloud"
-$VIUsername = "your-vsphere-user"
-$VIPassword = "your-vsphere-password"
+$VIServer = "ts-vc-01.terasky.local"
+$VIUsername = "itay@vsphere.local"
+$VIPassword = "VMware1!"
 
 # https://williamlam.com/nested-virtualization/nested-esxi-virtual-appliance
-# Full Path to both the Nested ESXi 7.0 VA, Extracted VCSA 7.0 ISO & NSX Advanced 20.1.7 OVA
-$NestedESXiApplianceOVA = "C:\Users\itay\Downloads\tkgs\Nested_ESXi7.0u3k_Appliance_Template_v1.ova"
-$VCSAInstallerPath = "C:\Users\itay\Downloads\tkgs\VMware-VCSA-all-7.0.3-21290409"
-$NSXAdvLBOVA = "C:\Users\itay\Downloads\tkgs\controller-20.1.7-9154.ova"
+# Full Path to both the Nested ESXi VA, Extracted VCSA ISO & NSX Advanced OVA
+$NestedESXiApplianceOVA = "C:\Users\itay\Downloads\data\vsphere\Nested_ESXi8.0u3_Appliance_Template_v1.ova"
+$VCSAInstallerPath = "C:\Users\itay\Downloads\data\vsphere\VMware-VCSA-all-8.0.3-24022515"
+$NSXAdvLBOVA = "C:\Users\itay\Downloads\data\nsxalb\controller-22.1.5-9093.ova"
 
 # TKG Content Library URL
 $TKGContentLibraryName = "tkg-content-library"
@@ -21,9 +21,9 @@ $TKGContentLibraryURL = "https://wp-content.vmware.com/v2/latest/lib.json"
 
 # Nested ESXi VMs to deploy
 $NestedESXiHostnameToIPs = @{
-    "l01-tkgs-esxi-01" = "172.16.51.71"
-    "l01-tkgs-esxi-02" = "172.16.51.72"
-    "l01-tkgs-esxi-03" = "172.16.51.73"
+    "it-tkgs-esxi-07" = "172.16.51.73"
+    "it-tkgs-esxi-08" = "172.16.51.74"
+    "it-tkgs-esxi-09" = "172.16.51.75"
 }
 
 # Nested ESXi VM Resources
@@ -34,10 +34,10 @@ $NestedESXiCachingvDisk = "8" #GB
 $NestedESXiCapacityvDisk = "300" #GB
 
 # VCSA Deployment Configuration
-$VCSADeploymentSize = "tiny"
-$VCSADisplayName = "l01-tkgs-vcsa-01"
-$VCSAIPAddress = "172.16.51.70"
-$VCSAHostname = "l01-tkgs-vcsa-01.cloudnativeapps.cloud" #Change to IP if you don't have valid DNS
+$VCSADeploymentSize = "small"
+$VCSADisplayName = "it-tkgs-vcsa-02"
+$VCSAIPAddress = "172.16.51.71"
+$VCSAHostname = "it-tkgs-vcsa-02.terasky.lab" #Change to IP if you don't have valid DNS
 $VCSAPrefix = "24"
 $VCSASSODomainName = "vsphere.local"
 $VCSASSOPassword = "VMware1!"
@@ -45,10 +45,10 @@ $VCSARootPassword = "VMware1!"
 $VCSASSHEnable = "true"
 
 # NSX Advanced LB Configuration
-$NSXALBVersion = "20.1.7"
-$NSXAdvLBDisplayName = "l01-tkgs-nsxalb-01"
-$NSXAdvLByManagementIPAddress = "172.16.51.69"
-$NSXAdvLBHostname = "l01-tkgs-nsxalb-01.cloudnativeapps.cloud"
+$NSXALBVersion = "22.1.5"
+$NSXAdvLBDisplayName = "it-tkgs-nsxalb-02"
+$NSXAdvLByManagementIPAddress = "172.16.51.72"
+$NSXAdvLBHostname = "it-tkgs-nsxalb-02.terasky.lab"
 $NSXAdvLBAdminPassword = "VMware1!"
 $NSXAdvLBvCPU = "8" #GB
 $NSXAdvLBvMEM = "24" #GB
@@ -57,21 +57,21 @@ $NSXAdvLBIPAMName = "tkgs-ipam"
 $NSXALBLicenseType = "ESSENTIALS"
 $NSXALBDefaultAdminPassword = "58NFaGDJm(PJH0G"
 $NSXALBSEVMFolder = "nsxalb-service-engines"
-$NSXALBSENamePrefix = "tkg_nsxalb"
+$NSXALBSENamePrefix = "tkg-nsxalb"
 
 # Service Engine Management Network Configuration
 $NSXAdvLBManagementNetwork = "172.16.51.0"
 $NSXAdvLBManagementNetworkPrefix = "24"
-$NSXAdvLBManagementNetworkStartRange = "172.16.51.74"
-$NSXAdvLBManagementNetworkEndRange = "172.16.51.77"
+$NSXAdvLBManagementNetworkStartRange = "172.16.51.76"
+$NSXAdvLBManagementNetworkEndRange = "172.16.51.80"
 
 # VIP Network Configuration
 $NSXAdvLBVIPNetworkName = "itay-k8s-vips"
 $NSXAdvLBVIPNetwork = "172.16.53.0"
 $NSXAdvLBVIPNetworkGateway = "172.16.53.1"
 $NSXAdvLBVIPNetworkPrefix = "24"
-$NSXAdvLBVIPNetworkStartRange = "172.16.53.20"
-$NSXAdvLBVIPNetworkEndRange = "172.16.53.40"
+$NSXAdvLBVIPNetworkStartRange = "172.16.53.80"
+$NSXAdvLBVIPNetworkEndRange = "172.16.53.100"
 
 # Self-Signed TLS Certificate
 $NSXAdvLBSSLCertName = "nsx-alb"
@@ -95,10 +95,10 @@ $VMGateway = "172.16.51.1"
 $VMDNS = "172.16.20.10"
 $VMNTP = "172.16.20.10"
 $VMPassword = "VMware1!"
-$VMDomain = "cloudnativeapps.cloud"
+$VMDomain = "terasky.lab"
 $VMSyslog = "172.16.51.51"
-$VMFolder = "tkgs-nested-infra"
-$VMFolderFullPath = "LABS/itay/l01/tkgs-nested-infra"
+$VMFolder = "tkgs-nsxalb-01"
+$VMFolderFullPath = "LABS/itay/$VMFolder"
 # Applicable to Nested ESXi only
 $VMSSH = "true"
 $VMVMFS = "false"
@@ -504,7 +504,7 @@ if ($deployNSXAdvLB -eq 1) {
     $ovfconfig.avi.CONTROLLER.default_gw.value = $VMGateway
 
     MyLogger "Deploying NSX Advanced LB VM $NSXAdvLBDisplayName ..."
-    $vm = Import-VApp -Source $NSXAdvLBOVA -OvfConfiguration $ovfconfig -Name $NSXAdvLBDisplayName -Location $ResourcePool -InventoryLocation $VMFolder -VMHost $vmhost -Datastore $datastore -DiskStorageFormat thin
+    $vm = Import-VApp -Source $NSXAdvLBOVA -OvfConfiguration $ovfconfig -Name $NSXAdvLBDisplayName -Location $ResourcePool -InventoryLocation $VMFolder -VMHost $vmhost -Datastore $datastore -DiskStorageFormat thin -Force
 
     MyLogger "Updating vCPU Count to $NSXAdvLBvCPU & vMEM to $NSXAdvLBvMEM GB ..."
     Set-VM -Server $viConnection -VM $vm -NumCpu $NSXAdvLBvCPU -MemoryGB $NSXAdvLBvMEM -Confirm:$false | Out-File -Append -LiteralPath $verboseLogFile
@@ -769,7 +769,7 @@ if ($setupTanzu -eq 1) {
     $clPort = ([System.Uri]$TKGContentLibraryURL).port
     $clThumbprint = Get-SSLThumbprint -Url "${clScheme}://${clHost}:${clPort}"
 
-    New-ContentLibrary -Server $vc -Name $TKGContentLibraryName -Description "Subscribed TKG Content Library" -Datastore (Get-Datastore -Server $vc $vSANDatastoreName) -AutomaticSync -SubscriptionUrl $TKGContentLibraryURL -SslThumbprint $clThumbprint | Out-File -Append -LiteralPath $verboseLogFile
+    New-ContentLibrary -Server $vc -Name $TKGContentLibraryName -Description "Subscribed TKG Content Library" -Datastore (Get-Datastore -Server $vc $vSANDatastoreName) -DownloadContentOnDemand -SubscriptionUrl $TKGContentLibraryURL -SslThumbprint $clThumbprint | Out-File -Append -LiteralPath $verboseLogFile
 
     Disconnect-VIServer * -Confirm:$false | Out-Null
 }
